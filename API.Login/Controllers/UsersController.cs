@@ -1,4 +1,5 @@
-﻿using API.Login.Models;
+﻿using API.Login.Filters;
+using API.Login.Models;
 using API.Login.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,17 +25,15 @@ namespace API.Login.Controllers
         [SwaggerResponse(statusCode: 500, description: "Erro interno", Type = typeof(GenericErrorViewModel))]
         [HttpPost]
         [Route("signin")]
+        [CustomizedModelStateValidation]
         public IActionResult SignIn(UserViewModelSignIn userViewModelSignIn) 
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest( new ValidateFieldsModel( ModelState.SelectMany(sm => sm.Value.Errors).Select(s => s.ErrorMessage) ) );
-            }
             return Ok(userViewModelSignIn);
         }
 
         [HttpPost]
         [Route("signup")]
+        [CustomizedModelStateValidation]
         public IActionResult SignUp(UserViewModelSignUp userViewModelSignUp)
         {
             return Created("", userViewModelSignUp);
