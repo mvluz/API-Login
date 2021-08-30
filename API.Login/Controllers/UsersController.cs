@@ -26,6 +26,10 @@ namespace API.Login.Controllers
         [Route("signin")]
         public IActionResult SignIn(UserViewModelSignIn userViewModelSignIn) 
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest( new ValidateFieldsModel( ModelState.SelectMany(sm => sm.Value.Errors).Select(s => s.ErrorMessage) ) );
+            }
             return Ok(userViewModelSignIn);
         }
 
